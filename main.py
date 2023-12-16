@@ -1,4 +1,5 @@
 import pandas as pd
+import time
 from data_preparation import DataExtractor
 from data_blocking import create_year_blocks
 from data_matching import calculate_similarities
@@ -29,9 +30,23 @@ def main():
     print(result_blocks_dblp)
     print(result_blocks_acm)
     
-    # new 
-    similarity_df = calculate_similarities(df_dblp_path, df_acm_path, threshold=0.5, column_name='Title')
-    print(similarity_df.head())
+    start_time = time.time()
+    similarity_df = calculate_similarities(result_blocks_dblp, result_blocks_acm, threshold=0.8, column_name='Title')
+    end_time = time.time()
+    runtime = end_time - start_time
+
+    with open('elapsed_time_blocks.txt', 'w') as file:
+        file.write(f"Elapsed time: {runtime} seconds")
+    print('matches with blocks: ' + len(similarity_df))
+
+    start_time = time.time()
+    similarity_df = calculate_similarities(df_dblp_path, df_acm_path, threshold=0.8, column_name='Title')
+    end_time = time.time()
+    runtime = end_time - start_time
+
+    with open('elapsed_time_DF.txt', 'w') as file:
+        file.write(f"Elapsed time: {runtime} seconds")
+    print('matches on whole data: ' + len(similarity_df))
 
 if __name__ == "__main__":
     main()
