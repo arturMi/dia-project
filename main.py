@@ -6,8 +6,11 @@ from data_matching import calculate_similarities_between_data
 
 def main():
     # paths for dblp and acm
-    #dblp_path = './data/citation-acm-v8.txt'
-    #acm_path = './data/dblp.txt'
+
+    #dblp_path = check_file_existence('dblp.txt', http_link=https://lfs.aminer.cn/lab-datasets/citation/dblp.v8.tgz)
+    #dblp_path = check_file_existence('citation-acm-v8.txt', http_link=https://lfs.aminer.cn/lab-datasets/citation/citation-acm-v8.txt.tgz)
+    #dblp_path = './data/dblp.txt'
+    #acm_path = './data/citation-acm-v8.txt'
 
     #extract_dblp = DataExtractor(dblp_path)
     #extract_dblp.process_dblp()
@@ -38,7 +41,7 @@ def main():
             
             start_time = time.time()
             similarity_df = calculate_similarities_between_data(result_blocks_dblp, result_blocks_acm, measure=measure, threshold=threshold, column_name='Title')
-            print(f'matches with blocks and {measure}: ' + len(similarity_df))
+            print(f'matches with blocks and {measure}: ' + similarity_df.shape)
 
             similarity_df.to_csv(f'./data/Matched_Entities_DF_{measure}_{threshold}.csv', index=False)
             end_time = time.time()
@@ -49,7 +52,7 @@ def main():
 
             start_time = time.time()
             similarity_df = calculate_similarities_between_data(df_dblp_path, df_acm_path, measure=measure, threshold=threshold, column_name='Title')
-            print(f'matches on whole data and {sim_measure}: ' + len(similarity_df))
+            print(f'matches on whole data and {sim_measure}: ' + similarity_df.shape)
             
             end_time = time.time()
             runtime = end_time - start_time
