@@ -26,7 +26,7 @@ def main():
     #df_dblp_path = pd.read_csv('data/DBLP_1995_2004.csv')
     #df_acm_path = pd.read_csv('data/ACM_1995_2004.csv')
 
-    df_dblp_path = pd.read_csv('data/DBPL2.csv')
+    df_dblp_path = pd.read_csv('data/DBLP2.csv')
     df_acm_path = pd.read_csv('data/ACM.csv')
 
     # get blocks as dictionary
