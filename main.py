@@ -26,8 +26,8 @@ def main():
     #df_dblp_path = pd.read_csv('data/DBLP_1995_2004.csv')
     #df_acm_path = pd.read_csv('data/ACM_1995_2004.csv')
 
-    df_dblp_path = pd.read_csv('data/DBLP2.csv', encoding='utf-8')
-    df_acm_path = pd.read_csv('data/ACM.csv', encoding='utf-8')
+    df_dblp_path = pd.read_csv('data/DBLP2.csv', engine='python')
+    df_acm_path = pd.read_csv('data/ACM.csv', engine='python')
 
     # get blocks as dictionary
     result_blocks_dblp = create_year_blocks(df_dblp_path, year_ranges)
