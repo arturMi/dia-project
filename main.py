@@ -28,9 +28,10 @@ def main():
 
     print(result_blocks_dblp)
     print(result_blocks_acm)
-
-    #similarity_df = calculate_similarities(df_dblp_path, df_acm_path, threshold=0.5, column_name='Title')
-    #print(similarity_df.head())
+    
+    # new 
+    similarity_df = calculate_similarities(df_dblp_path, df_acm_path, threshold=0.5, column_name='Title')
+    print(similarity_df.head())
 
 if __name__ == "__main__":
     main()
