@@ -30,27 +30,34 @@ def main():
     print(result_blocks_dblp)
     print(result_blocks_acm)
     
-    start_time = time.time()
-    #sim_measure = 'trigram'
-    sim_measure = 'jaccard'
-    similarity_df = calculate_similarities_between_data(result_blocks_dblp, result_blocks_acm, measure=sim_measure, threshold=0.6, column_name='Title')
-    with open('elapsed_time_blocks.txt', 'w') as file:
-        file.write(f"Elapsed time: {runtime} seconds")
-    print(f'matches with blocks and {sim_measure}: ' + len(similarity_df))
-    end_time = time.time()
-    runtime = end_time - start_time
+    sim_measure = ['jaccard', 'trigram']
+    thresholds = [0.5, 0.6, 0.7, 0.8]
+    
+    for measure in sim_measure:
+        for threshold in thresholds:
+            
+            start_time = time.time()
+            similarity_df = calculate_similarities_between_data(result_blocks_dblp, result_blocks_acm, measure=measure, threshold=threshold, column_name='Title')
+            print(f'matches with blocks and {measure}: ' + len(similarity_df))
 
-    start_time = time.time()
-    # trigram
-    similarity_df = calculate_similarities_between_data(df_dblp_path, df_acm_path, measure=sim_measure, threshold=0.6, column_name='Title')
-    end_time = time.time()
-    runtime = end_time - start_time
+            similarity_df.to_csv(f'./data/Matched_Entities_DF_{measure}_{threshold}.csv', index=False)
+            end_time = time.time()
+            runtime = end_time - start_time
+           
+            with open(f'elapsed_time_blocks_{measure}_{threshold}.txt', 'w') as file:
+                file.write(f"Elapsed time: {runtime} seconds")
 
-    with open('elapsed_time_DF.txt', 'w') as file:
-        file.write(f"Elapsed time: {runtime} seconds")
-    print(f'matches on whole dataand {sim_measure}: ' + len(similarity_df))
+            start_time = time.time()
+            similarity_df = calculate_similarities_between_data(df_dblp_path, df_acm_path, measure=measure, threshold=threshold, column_name='Title')
+            print(f'matches on whole data and {sim_measure}: ' + len(similarity_df))
+            
+            end_time = time.time()
+            runtime = end_time - start_time
 
-    # Baseline 2224 matches
+            with open(f'elapsed_time_blocks_{measure}_{threshold}.txt', 'w') as file:
+                file.write(f'Elapsed time: {runtime} seconds')
+
+    # Baseline 2224 matches -> calculate precision, recall, and F-measure of the matches generated
 
 if __name__ == "__main__":
     main()
