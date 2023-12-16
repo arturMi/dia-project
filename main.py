@@ -31,22 +31,26 @@ def main():
     print(result_blocks_acm)
     
     start_time = time.time()
-    similarity_df = calculate_similarities_between_data(result_blocks_dblp, result_blocks_acm, threshold=0.8, column_name='Title')
+    #sim_measure = 'trigram'
+    sim_measure = 'jaccard'
+    similarity_df = calculate_similarities_between_data(result_blocks_dblp, result_blocks_acm, measure=sim_measure, threshold=0.6, column_name='Title')
+    with open('elapsed_time_blocks.txt', 'w') as file:
+        file.write(f"Elapsed time: {runtime} seconds")
+    print(f'matches with blocks and {sim_measure}: ' + len(similarity_df))
     end_time = time.time()
     runtime = end_time - start_time
 
-    with open('elapsed_time_blocks.txt', 'w') as file:
-        file.write(f"Elapsed time: {runtime} seconds")
-    print('matches with blocks: ' + len(similarity_df))
-
     start_time = time.time()
-    similarity_df = calculate_similarities_between_data(df_dblp_path, df_acm_path, threshold=0.8, column_name='Title')
+    # trigram
+    similarity_df = calculate_similarities_between_data(df_dblp_path, df_acm_path, measure=sim_measure, threshold=0.6, column_name='Title')
     end_time = time.time()
     runtime = end_time - start_time
 
     with open('elapsed_time_DF.txt', 'w') as file:
         file.write(f"Elapsed time: {runtime} seconds")
-    print('matches on whole data: ' + len(similarity_df))
+    print(f'matches on whole dataand {sim_measure}: ' + len(similarity_df))
+
+    # Baseline 2224 matches
 
 if __name__ == "__main__":
     main()
