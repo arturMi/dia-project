@@ -28,20 +28,7 @@ def calculate_similarities(dataframe_one, dataframe_two, threshold=0.9, column_n
 
 # Function to calculate similarities between blocks in two dictionaries
 def calculate_similarities_between_dicts(dict_one, dict_two, threshold=0.9, column_name='Title'):
-    if isinstance(dataframe_one, pd.DataFrame) and isinstance(dataframe_two, pd.DataFrame):
-        # If both arguments are DataFrames, proceed with similarity calculations
-        similarities = []
-        for idx1, row1 in dataframe_one.iterrows():
-            for idx2, row2 in dataframe_two.iterrows():
-                sim = jaccard_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
-                if sim >= threshold:
-                    similarities.append({'ACM_Entry': idx1, 'DBLP_Entry': idx2, 'Similarity': sim})
-
-        df = pd.DataFrame(similarities)
-
-        return df.to_csv(f'./data/Matched_Entities_DF.csv', index=False)
-    
-    elif isinstance(dict_one, dict) and isinstance(dict_two, dict):
+    if isinstance(dict_one, dict) and isinstance(dict_two, dict):
         similarities = []
         
         for block_name_one, dataframe_one in dict_one.items():
@@ -57,10 +44,19 @@ def calculate_similarities_between_dicts(dict_one, dict_two, threshold=0.9, colu
                         raise ValueError(f"Value for '{block_name_two}' in dict_two is not a DataFrame.")
             else:
                 raise ValueError(f"Value for '{block_name_one}' in dict_one is not a DataFrame.")
+            
+    elif isinstance(dataframe_one, pd.DataFrame) and isinstance(dataframe_two, pd.DataFrame):
+        # If both arguments are DataFrames, proceed with similarity calculations
+        similarities = []
+        for idx1, row1 in dataframe_one.iterrows():
+            for idx2, row2 in dataframe_two.iterrows():
+                sim = jaccard_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
+                if sim >= threshold:
+                    similarities.append({'ACM_Entry': idx1, 'DBLP_Entry': idx2, 'Similarity': sim})
 
         df = pd.DataFrame(similarities)
-        return df.to_csv(f'./data/Matched_Entities_Blocks.csv', index=False)
-    
+
+        return df.to_csv(f'./data/Matched_Entities_DF.csv', index=False)
     else:
         # Handle cases where inputs are not dictionaries or DataFrames
         raise ValueError("Inputs should be two dataframes dictionaries of blocks.")
