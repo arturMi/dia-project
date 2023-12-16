@@ -27,7 +27,7 @@ def calculate_similarities(dataframe_one, dataframe_two, threshold=0.9, column_n
 
 
 # Function to calculate similarities between blocks in two dictionaries
-def calculate_similarities_between_dicts(dict_or_dataframe_one, dict_or_dataframe_one_two, threshold=0.9, column_name='Title'):
+def calculate_similarities_between_data(dict_or_dataframe_one, dict_or_dataframe_one_two, threshold=0.9, column_name='Title'):
     if isinstance(dict_or_dataframe_one, dict) and isinstance(dict_or_dataframe_one_two, dict):
         similarities = []
         
