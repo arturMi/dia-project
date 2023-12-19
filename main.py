@@ -38,15 +38,15 @@ def main():
     
     sim_measure = ['jaccard', 'trigram']
     threshold = 0.6
-    column = 'title'
+    columns = ['title', 'authors']
     
     for measure in sim_measure:
-            
+        for column in columns:
             start_time = time.time()
             similarity_df = calculate_similarities_between_data(result_blocks_dblp, result_blocks_acm, measure=measure, threshold=threshold, column_name=column)
             print(f'matches on data blocks with method {measure} and threshold {threshold}: {str(similarity_df.shape)}')
 
-            similarity_df.to_csv(f'./data/Matched_Entities_DF_{measure}.csv', index=False)
+            similarity_df.to_csv(f'./data/Matched_Entities_DF_{measure}_{column}.csv', index=False)
             end_time = time.time()
             runtime = end_time - start_time
            
@@ -57,7 +57,7 @@ def main():
             similarity_df = calculate_similarities_between_data(df_dblp_path, df_acm_path, measure=measure, threshold=threshold, column_name=column)
             print(f'matches on whole data and method {measure} and threshold {threshold}: {str(similarity_df.shape)}')
             
-            similarity_df.to_csv(f'./data/Matched_Entities_Block_{measure}.csv', index=False)
+            similarity_df.to_csv(f'./data/Matched_Entities_Block_{measure}_{column}.csv', index=False)
             end_time = time.time()
             runtime = end_time - start_time
 
