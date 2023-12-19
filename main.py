@@ -45,7 +45,7 @@ def main():
             
             start_time = time.time()
             similarity_df = calculate_similarities_between_data(result_blocks_dblp, result_blocks_acm, measure=measure, threshold=threshold, column_name=column)
-            print(f'matches with blocks and {measure}: ' + similarity_df.shape)
+            print(f'matches on whole data and {sim_measure}: {str(similarity_df.shape)}')
 
             similarity_df.to_csv(f'./data/Matched_Entities_DF_{measure}_{threshold}.csv', index=False)
             end_time = time.time()
@@ -56,7 +56,7 @@ def main():
 
             start_time = time.time()
             similarity_df = calculate_similarities_between_data(df_dblp_path, df_acm_path, measure=measure, threshold=threshold, column_name=column)
-            print(f'matches on whole data and {sim_measure}: ' + similarity_df.shape)
+            print(f'matches on whole data and {sim_measure}: {str(similarity_df.shape)}')
             
             end_time = time.time()
             runtime = end_time - start_time
