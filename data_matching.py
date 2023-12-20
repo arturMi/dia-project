@@ -1,14 +1,14 @@
-import pandas as pd
 import nltk
-nltk.download('punkt')
+import pandas as pd
 from multiprocessing import Pool
+
+nltk.download('punkt')
 
 # Tokenization function
 def tokenize(text):
-    if isinstance(text, str):  # Check if 'text' is a string
+    if isinstance(text, str):  
         return set(nltk.word_tokenize(text.lower()))
     else:
-        # Handle cases where 'text' is not a string (return an empty set or handle differently)
         return set()
 
 # Calculate Jaccard similarity
@@ -39,12 +39,9 @@ def compare_blocks(block_one, block_two, measure, threshold, column_name):
                 similarities.append({'idDBLP': row1['id'], 'idACM': row2['id'], 'Similarity': sim})
     return similarities
 
-def process_blocks(block_name_one, dataframe_one, block_name_two, dataframe_two, measure, threshold, column_name):
-    if isinstance(dataframe_one, pd.DataFrame) and isinstance(dataframe_two, pd.DataFrame):
-        similarities = compare_blocks(dataframe_one, dataframe_two, measure, threshold, column_name)
-        return similarities
-    else:
-        raise ValueError("Blocks should be DataFrames.")
+def process_blocks(block_name_one, block_one_data, block_name_two, block_two_data, measure, threshold, column_name):
+    similarities = compare_blocks(block_one_data, block_two_data, measure, threshold, column_name)
+    return similarities
 
 def calculate_similarities_between_data(dict_or_dataframe_one, dict_or_dataframe_two, measure='jaccard', threshold=0.75, column_name='Title'):
     if isinstance(dict_or_dataframe_one, dict) and isinstance(dict_or_dataframe_two, dict):
@@ -52,15 +49,9 @@ def calculate_similarities_between_data(dict_or_dataframe_one, dict_or_dataframe
         pool = Pool()  # Initialize multiprocessing pool
         
         # Process each block pair in parallel
-        for block_name_one, dataframe_one in dict_or_dataframe_one.items():
-            if isinstance(dataframe_one, pd.DataFrame):
-                for block_name_two, dataframe_two in dict_or_dataframe_two.items():
-                    if isinstance(dataframe_two, pd.DataFrame):
-                        similarities.append(pool.apply_async(process_blocks, (block_name_one, dataframe_one, block_name_two, dataframe_two, measure, threshold, column_name)))
-                    else:
-                        raise ValueError(f"Value for '{block_name_two}' in dict_or_dataframe_two is not a DataFrame.")
-            else:
-                raise ValueError(f"Value for '{block_name_one}' in dict_or_dataframe_one is not a DataFrame.")
+        for block_name_one, block_one_data in dict_or_dataframe_one.items():
+            for block_name_two, block_two_data in dict_or_dataframe_two.items():
+                similarities.append(pool.apply_async(process_blocks, (block_name_one, block_one_data, block_name_two, block_two_data, measure, threshold, column_name)))
 
         pool.close()
         pool.join()
@@ -74,6 +65,7 @@ def calculate_similarities_between_data(dict_or_dataframe_one, dict_or_dataframe
         return df
     else:
         raise ValueError("Inputs should be two dictionaries.")
+
 
 '''
 # Function to calculate similarities between blocks in two dictionaries or DataFrames
