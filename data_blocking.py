@@ -9,6 +9,7 @@ def create_year_blocks(dataframe, year_ranges):
         block_name = f'Block_{start}_{end}'
         blocks[block_name] = dataframe[(dataframe['year'] >= start) & (dataframe['year'] <= end)]
     return blocks
+
 '''def create_year_blocks(dataframe, year_ranges):
     blocks = {}
     dataframe = dataframe.sort_values(by='Year')

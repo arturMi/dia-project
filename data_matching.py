@@ -1,6 +1,7 @@
 import pandas as pd
 import nltk
 nltk.download('punkt')
+from multiprocessing import Pool
 
 # Tokenization function
 def tokenize(text):
@@ -22,50 +23,53 @@ def trigram_similarity(str1, str2):
     
     return intersection / union if union != 0 else 0
 
-# Function to calculate similarities between blocks in two dictionaries or DataFrames
+def compare_blocks(block_one, block_two, measure, threshold, column_name):
+    similarities = []
+    for idx1, row1 in block_one.iterrows():
+        for idx2, row2 in block_two.iterrows():
+            if measure == 'jaccard':
+                sim = jaccard_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
+            elif measure == 'trigram':
+                sim = trigram_similarity(row1[column_name], row2[column_name])
+            if sim >= threshold:
+                similarities.append({'idDBLP': row1['id'], 'idACM': row2['id'], 'Similarity': sim})
+    return similarities
+
+def process_blocks(block_name_one, dataframe_one, block_name_two, dataframe_two, measure, threshold, column_name):
+    if isinstance(dataframe_one, pd.DataFrame) and isinstance(dataframe_two, pd.DataFrame):
+        similarities = compare_blocks(dataframe_one, dataframe_two, measure, threshold, column_name)
+        return similarities
+    else:
+        raise ValueError("Blocks should be DataFrames.")
+
 def calculate_similarities_between_data(dict_or_dataframe_one, dict_or_dataframe_two, measure='jaccard', threshold=0.75, column_name='Title'):
     if isinstance(dict_or_dataframe_one, dict) and isinstance(dict_or_dataframe_two, dict):
         similarities = []
+        pool = Pool()  # Initialize multiprocessing pool
         
+        # Process each block pair in parallel
         for block_name_one, dataframe_one in dict_or_dataframe_one.items():
             if isinstance(dataframe_one, pd.DataFrame):
                 for block_name_two, dataframe_two in dict_or_dataframe_two.items():
                     if isinstance(dataframe_two, pd.DataFrame):
-                        for idx1, row1 in dataframe_one.iterrows():
-                            for idx2, row2 in dataframe_two.iterrows():
-                                if measure == 'jaccard':
-                                    sim = jaccard_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
-                                if measure == 'trigram':
-                                    sim = trigram_similarity(row1[column_name], row2[column_name])
-                                if sim >= threshold:
-                                    similarities.append({'idDBLP': row1['id'], 'idACM': row2['id'], 'Similarity': sim})
+                        similarities.append(pool.apply_async(process_blocks, (block_name_one, dataframe_one, block_name_two, dataframe_two, measure, threshold, column_name)))
                     else:
                         raise ValueError(f"Value for '{block_name_two}' in dict_or_dataframe_two is not a DataFrame.")
             else:
                 raise ValueError(f"Value for '{block_name_one}' in dict_or_dataframe_one is not a DataFrame.")
+
+        pool.close()
+        pool.join()
+
+        # Retrieve results from parallel processing
+        similarities_list = [result.get() for result in similarities]
+        similarities = [sim for sublist in similarities_list for sim in sublist]  # Flatten the list of similarities
         
         df = pd.DataFrame(similarities)
-        df.to_csv(f'./data/Matched_Entities_Blocks{measure}.csv', index=False)
+        df.to_csv(f'./data/Matched_Entities_Blocks_{measure}.csv', index=False)
         return df
-
-    elif isinstance(dict_or_dataframe_one, pd.DataFrame) and isinstance(dict_or_dataframe_two, pd.DataFrame):
-        similarities = []
-        for idx1, row1 in dict_or_dataframe_one.iterrows():
-            for idx2, row2 in dict_or_dataframe_two.iterrows():
-                if measure == 'jaccard':
-                    sim = jaccard_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
-                if measure == 'trigram':
-                    sim = trigram_similarity(row1[column_name], row2[column_name])
-                if sim >= threshold:
-                    similarities.append({'idDBLP': row1['id'], 'idACM': row2['id'], 'Similarity': sim})
-
-        df = pd.DataFrame(similarities)
-        df.to_csv(f'./data/Matched_Entities_DF{measure}.csv', index=False)
-        return df
-
     else:
-        raise ValueError("Inputs should be two dictionaries or two DataFrames.")
-
+        raise ValueError("Inputs should be two dictionaries.")
 
 '''
 # Function to calculate similarities between blocks in two dictionaries or DataFrames
