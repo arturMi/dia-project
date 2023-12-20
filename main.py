@@ -38,7 +38,7 @@ def main():
     
     sim_measure = ['jaccard', 'trigram']
     threshold = 0.7
-    columns = ['title', 'authors']
+    columns = ['title']
     
     for measure in sim_measure:
         for column in columns:
@@ -50,7 +50,7 @@ def main():
             end_time = time.time()
             runtime = end_time - start_time
            
-            with open(f'elapsed_time_df_{measure}_{column}.txt', 'w') as file:
+            with open(f'elapsed_time_blocks_{measure}_{column}.txt', 'w') as file:
                 file.write(f"Elapsed time: {runtime} seconds")
 
             '''start_time = time.time()
@@ -61,7 +61,7 @@ def main():
             end_time = time.time()
             runtime = end_time - start_time
 
-            with open(f'elapsed_time_blocks_{measure}_{column}.txt', 'w') as file:
+            with open(f'elapsed_time_df_{measure}_{column}.txt', 'w') as file:
                 file.write(f'Elapsed time: {runtime} seconds')'''
 
     # Baseline 2224 matches -> calculate precision, recall, and F-measure of the matches generated
