@@ -5,7 +5,11 @@ from multiprocessing import Pool
 
 # Tokenization function
 def tokenize(text):
-    return set(nltk.word_tokenize(text.lower()))
+    if isinstance(text, str):  # Check if 'text' is a string
+        return set(nltk.word_tokenize(text.lower()))
+    else:
+        # Handle cases where 'text' is not a string (return an empty set or handle differently)
+        return set()
 
 # Calculate Jaccard similarity
 def jaccard_similarity(set1, set2):

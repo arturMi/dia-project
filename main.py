@@ -53,7 +53,7 @@ def main():
             with open(f'elapsed_time_df_{measure}_{column}.txt', 'w') as file:
                 file.write(f"Elapsed time: {runtime} seconds")
 
-            start_time = time.time()
+            '''start_time = time.time()
             similarity_df = calculate_similarities_between_data(df_dblp_path, df_acm_path, measure=measure, threshold=threshold, column_name=column)
             print(f'matches on whole data and method {measure} and threshold {threshold}: {str(similarity_df.shape)}')
             
@@ -62,7 +62,7 @@ def main():
             runtime = end_time - start_time
 
             with open(f'elapsed_time_blocks_{measure}_{column}.txt', 'w') as file:
-                file.write(f'Elapsed time: {runtime} seconds')
+                file.write(f'Elapsed time: {runtime} seconds')'''
 
     # Baseline 2224 matches -> calculate precision, recall, and F-measure of the matches generated
 
