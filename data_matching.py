@@ -43,7 +43,7 @@ def process_blocks(block_name_one, block_one_data, block_name_two, block_two_dat
     similarities = compare_blocks(block_one_data, block_two_data, measure, threshold, column_name)
     return similarities
 
-def calculate_similarities_between_data(dict_or_dataframe_one, dict_or_dataframe_two, measure='jaccard', threshold=0.75, column_name='Title'):
+def calculate_similarities_between_blocks(dict_or_dataframe_one, dict_or_dataframe_two, measure='jaccard', threshold=0.75, column_name='Title'):
     if isinstance(dict_or_dataframe_one, dict) and isinstance(dict_or_dataframe_two, dict):
         similarities = []
         pool = Pool()  # Initialize multiprocessing pool
@@ -65,6 +65,24 @@ def calculate_similarities_between_data(dict_or_dataframe_one, dict_or_dataframe
         return df
     else:
         raise ValueError("Inputs should be two dictionaries.")
+    
+def calculate_similarities_between_dataframes(dataframe_one, dataframe_two, measure='jaccard', threshold=0.75, column_name='Title'):
+    if isinstance(dataframe_one, pd.DataFrame) and isinstance(dataframe_two, pd.DataFrame):
+        similarities = []
+        for idx1, row1 in dataframe_one.iterrows():
+            for idx2, row2 in dataframe_two.iterrows():
+                if measure == 'jaccard':
+                    sim = jaccard_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
+                elif measure == 'trigram':
+                    sim = trigram_similarity(row1[column_name], row2[column_name])
+                if sim >= threshold:
+                    similarities.append({'DBLP_Entry': row1.to_dict(), 'ACM_Entry': row2.to_dict(), 'Similarity': sim})
+
+        df = pd.DataFrame(similarities)
+        df.to_csv(f'./data/Matched_Entities_DF_{measure}.csv', index=False)
+        return df
+    else:
+        raise ValueError("Inputs should be two DataFrames.")
 
 
 '''
