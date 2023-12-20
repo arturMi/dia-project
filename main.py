@@ -44,7 +44,6 @@ def main():
         for column in columns:
             start_time = time.time()
             similarity_df = calculate_similarities_between_blocks(result_blocks_dblp, result_blocks_acm, measure=measure, threshold=threshold, column_name=column)
-            print(f'matches on data blocks with method {measure} and threshold {threshold}: {str(similarity_df.shape)}')
 
             similarity_df.to_csv(f'./data/Matched_Entities_DF_{measure}_{column}.csv', index=False)
             end_time = time.time()
