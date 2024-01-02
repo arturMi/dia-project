@@ -11,10 +11,13 @@ def tokenize(text):
     else:
         return set()
 
-# Calculate Jaccard similarity
 def jaccard_similarity(set1, set2):
-    intersection = len(set1.intersection(set2))
-    union = len(set1.union(set2))
+    set1_upper = {element.upper() for element in set1}
+    set2_upper = {element.upper() for element in set2}
+
+    intersection = len(set1_upper.intersection(set2_upper))
+    union = len(set1_upper.union(set2_upper))
+    
     return intersection / union if union != 0 else 0
 
 def trigram_similarity(str1, str2):
