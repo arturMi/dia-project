@@ -19,39 +19,39 @@ class DataExtractor:
                 if entry:
                     entries.append(entry)
                     entry = {}
-                entry['PaperID'] = self.paper_id_regex.search(line).group(1)
+                entry['paperID'] = self.paper_id_regex.search(line).group(1)
             elif line.startswith('#*'):
-                entry['Title'] = self.title_regex.search(line).group(1).strip()
+                entry['title'] = self.title_regex.search(line).group(1).strip()
             elif line.startswith('#@'):
                 authors_match = self.author_regex.search(line)
                 if authors_match:
-                    authors = [author.strip() for author in authors_match.group(1).split(',')]
-                    entry['Authors'] = authors if authors != [''] else []
+                    authors = authors_match.group(1).strip()  
+                    entry['authors'] = authors.replace(', ', ',') if authors else ""
                 else:
-                    entry['Authors'] = []
+                    entry['authors'] = ""
             elif line.startswith('#c'):
                 venue_match = self.venue_regex.search(line)
                 if venue_match:
-                    entry['Venue'] = venue_match.group(1).strip()
+                    entry['venue'] = venue_match.group(1).strip()
             elif line.startswith('#t'):
                 year_match = self.year_regex.search(line)
                 if year_match:
-                    entry['Year'] = year_match.group(1)
+                    entry['year'] = year_match.group(1)
         if entry:
             entries.append(entry)
         return entries
 
     def filter_entries(self, data):
         filtered_entries = [entry for entry in data if (
-            entry.get('Year') and 
-            ((entry.get('Venue', '').find('VLDB') != -1) or (entry.get('Venue', '').find('SIGMOD') != -1)) and 
-            (1995 <= int(entry['Year']) <= 2004)
+            entry.get('year') and 
+            ((entry.get('venue', '').find('VLDB') != -1) or (entry.get('venue', '').find('SIGMOD') != -1)) and 
+            (1995 <= int(entry['year']) <= 2004)
         )]
         return filtered_entries
 
     def process_dblp(self):
-        with open(self.file_path, 'r') as data_file:
-            data = data_file.readlines()
+        with open(self.file_path, 'r', encoding='utf-8') as data_file:
+        data = data_file.readlines()
 
         db_entries = self.extract_info(data)
         filtered_db = self.filter_entries(db_entries)
