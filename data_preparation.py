@@ -51,7 +51,7 @@ class DataExtractor:
 
     def process_dblp(self):
         with open(self.file_path, 'r', encoding='utf-8') as data_file:
-        data = data_file.readlines()
+            data = data_file.readlines()
 
         db_entries = self.extract_info(data)
         filtered_db = self.filter_entries(db_entries)
