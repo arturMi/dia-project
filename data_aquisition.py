@@ -11,7 +11,7 @@ def check_download_extract(url, file_name, folder_path):
         response = requests.get(url)
 
         if response.status_code == 200:
-            with open(file_path, 'wb') as file:
+            with open(file_path, 'r') as file:
                 file.write(response.content)
             
             if file_name.endswith('.tgz'):
