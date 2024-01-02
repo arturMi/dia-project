@@ -19,38 +19,33 @@ class DataExtractor:
                 if entry:
                     entries.append(entry)
                     entry = {}
-                paper_id_match = self.paper_id_regex.search(line)
-                if paper_id_match:
-                    entry['paperID'] = paper_id_match.group(1) if paper_id_match.group(1) else ""
+                entry['PaperID'] = self.paper_id_regex.search(line).group(1)
             elif line.startswith('#*'):
-                title_match = self.title_regex.search(line)
-                if title_match:
-                    entry['title'] = title_match.group(1).strip() if title_match.group(1) else ""
+                entry['Title'] = self.title_regex.search(line).group(1).strip()
             elif line.startswith('#@'):
                 authors_match = self.author_regex.search(line)
                 if authors_match:
-                    authors = authors_match.group(1).strip()
-                    entry['authors'] = authors.replace(', ', ',') if authors else ""
+                    authors = [author.strip() for author in authors_match.group(1).split(',')]
+                    entry['Authors'] = authors if authors != [''] else []
                 else:
-                    entry['authors'] = ""
+                    entry['Authors'] = []
             elif line.startswith('#c'):
                 venue_match = self.venue_regex.search(line)
                 if venue_match:
-                    entry['venue'] = venue_match.group(1).strip() if venue_match.group(1) else ""
+                    entry['Venue'] = venue_match.group(1).strip()
             elif line.startswith('#t'):
                 year_match = self.year_regex.search(line)
                 if year_match:
-                    entry['year'] = year_match.group(1) if year_match.group(1) else ""
+                    entry['Year'] = year_match.group(1)
         if entry:
             entries.append(entry)
         return entries
 
-
     def filter_entries(self, data):
         filtered_entries = [entry for entry in data if (
-            entry.get('year') and 
-            ((entry.get('venue', '').find('VLDB') != -1) or (entry.get('venue', '').find('SIGMOD') != -1)) and 
-            (1995 <= int(entry['year']) <= 2004)
+            entry.get('Year') and 
+            ((entry.get('Venue', '').find('VLDB') != -1) or (entry.get('Venue', '').find('SIGMOD') != -1)) and 
+            (1995 <= int(entry['Year']) <= 2004)
         )]
         return filtered_entries
 
