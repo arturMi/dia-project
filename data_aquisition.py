@@ -21,20 +21,18 @@ def download_extract_read(url, file_name):
                     tar.extractall(folder_path)
                 print(f"File '{file_name}' downloaded and extracted successfully.")
 
-                # Assuming the extracted file is a .txt file, change this extension accordingly
-                extracted_file_path = os.path.join(folder_path, os.path.splitext(file_name)[0] + '.txt')
-
-                # Read the extracted file with detected encoding as text
+                # Now read the extracted file with detected encoding
+                extracted_file_path = os.path.join(folder_path, os.path.splitext(file_name)[0])  # Change extension
                 with open(extracted_file_path, 'rb') as extracted_file:
                     raw_data = extracted_file.read()
                     detected_encoding = chardet.detect(raw_data)['encoding']
 
-                with open(extracted_file_path, 'r', encoding=detected_encoding) as extracted_text_file:
-                    text_data = extracted_text_file.read()
+                with open(extracted_file_path, 'r', encoding=detected_encoding) as extracted_file:
+                    data = extracted_file.readlines()
 
-                print("Data read successfully as text.")
-                # Process the text_data variable containing the content of the extracted text file
+                print("Data read successfully.")
             else:
                 print("Downloaded file is not a .tgz file.")
         else:
             print("Failed to download the file.")
+
