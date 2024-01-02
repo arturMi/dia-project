@@ -3,7 +3,7 @@ import time
 from data_preparation import DataExtractor
 from data_blocking import create_year_blocks
 from data_matching import calculate_similarities_between_blocks, calculate_similarities_between_dataframes
-from data_aquisition import download_file, extract_all_tgz_files
+from data_aquisition import download_file, extract_all_tgz_files, convert_txt_to_utf8
 
 def main():
 
@@ -16,6 +16,7 @@ def main():
     download_file(url=acm_url, file_name='citation-acm-v8.txt', folder_path=folder_path)
 
     extract_all_tgz_files(folder_path)
+    convert_txt_to_utf8(folder_path)
 
     dblp_path = './data/dblp.txt'
     acm_path = './data/citation-acm-v8.txt'
