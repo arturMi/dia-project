@@ -21,22 +21,23 @@ class DataExtractor:
                     entry = {}
                 entry['id'] = self.paper_id_regex.search(line).group(1)
             elif line.startswith('#*'):
-                entry['title'] = f'"{self.title_regex.search(line).group(1).strip()}"' if self.title_regex.search(line) else ""
+                entry['title'] = f'" {self.title_regex.search(line).group(1).strip()}"' if self.title_regex.search(line) else ""
             elif line.startswith('#@'):
                 authors_match = self.author_regex.search(line)
                 if authors_match:
                     authors = authors_match.group(1).strip().replace(', ', ',')
-                    entry['authors'] = f'"{authors}"' if authors else ""
+                    entry['authors'] = f'" {authors}"' if authors else ""
                 else:
                     entry['authors'] = ""
             elif line.startswith('#c'):
                 venue_match = self.venue_regex.search(line)
                 if venue_match:
-                    entry['venue'] = f'"{venue_match.group(1).strip()}"' if venue_match else ""
+                    entry['venue'] = f'" {venue_match.group(1).strip()}"' if venue_match else ""
             elif line.startswith('#t'):
                 year_match = self.year_regex.search(line)
                 if year_match:
                     entry['year'] = year_match.group(1)
+
         if entry:
             entries.append(entry)
         return entries
