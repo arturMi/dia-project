@@ -19,27 +19,32 @@ class DataExtractor:
                 if entry:
                     entries.append(entry)
                     entry = {}
-                entry['paperID'] = self.paper_id_regex.search(line).group(1)
+                paper_id_match = self.paper_id_regex.search(line)
+                if paper_id_match:
+                    entry['paperID'] = paper_id_match.group(1) if paper_id_match.group(1) else ""
             elif line.startswith('#*'):
-                entry['title'] = self.title_regex.search(line).group(1).strip()
+                title_match = self.title_regex.search(line)
+                if title_match:
+                    entry['title'] = title_match.group(1).strip() if title_match.group(1) else ""
             elif line.startswith('#@'):
                 authors_match = self.author_regex.search(line)
                 if authors_match:
-                    authors = authors_match.group(1).strip()  
+                    authors = authors_match.group(1).strip()
                     entry['authors'] = authors.replace(', ', ',') if authors else ""
                 else:
                     entry['authors'] = ""
             elif line.startswith('#c'):
                 venue_match = self.venue_regex.search(line)
                 if venue_match:
-                    entry['venue'] = venue_match.group(1).strip()
+                    entry['venue'] = venue_match.group(1).strip() if venue_match.group(1) else ""
             elif line.startswith('#t'):
                 year_match = self.year_regex.search(line)
                 if year_match:
-                    entry['year'] = year_match.group(1)
+                    entry['year'] = year_match.group(1) if year_match.group(1) else ""
         if entry:
             entries.append(entry)
         return entries
+
 
     def filter_entries(self, data):
         filtered_entries = [entry for entry in data if (
