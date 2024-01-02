@@ -23,11 +23,11 @@ def main():
     # create blocks, change likewise to get better
     year_ranges = [(1995, 1996), (1997, 1998), (1999, 2000), (2001,2002), (2003,2004)]
 
-    #df_dblp_path = pd.read_csv('data/DBLP_1995_2004.csv')
-    #df_acm_path = pd.read_csv('data/ACM_1995_2004.csv')
+    df_dblp_path = pd.read_csv('data/DBLP_1995_2004.csv')
+    df_acm_path = pd.read_csv('data/ACM_1995_2004.csv')
 
-    df_dblp_path = pd.read_csv('data/DBLP2.csv', engine='python')
-    df_acm_path = pd.read_csv('data/ACM.csv', engine='python')
+    #df_dblp_path = pd.read_csv('data/DBLP2.csv', engine='python')
+    #df_acm_path = pd.read_csv('data/ACM.csv', engine='python')
 
     # get blocks as dictionary
     result_blocks_dblp = create_year_blocks(df_dblp_path, year_ranges)
