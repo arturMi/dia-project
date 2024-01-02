@@ -18,11 +18,11 @@ def main():
     dblp_path = './data/dblp.txt'
     acm_path = './data/citation-acm-v8.txt'
 
-    extract_dblp = DataExtractor(dblp_path)
-    extract_dblp.process_dblp()
-
     extract_acm = DataExtractor(acm_path)
     extract_acm.process_acm()
+
+    extract_dblp = DataExtractor(dblp_path)
+    extract_dblp.process_dblp()
 
     # -------------------WORKS--------------------------
 
