@@ -39,7 +39,7 @@ def compare_blocks(block_one, block_two, measure, threshold, column_name):
             elif measure == 'trigram':
                 sim = trigram_similarity(row1[column_name], row2[column_name])
             if sim >= threshold:
-                similarities.append({'idDBLP': row1['index'], 'idACM': row2['id'], 'Similarity': sim})
+                similarities.append({'idDBLP': row1['id'], 'idACM': row2['id'], 'Similarity': sim})
     return similarities
 
 def process_blocks(block_name_one, block_one_data, block_name_two, block_two_data, measure, threshold, column_name):
