@@ -3,17 +3,19 @@ import time
 from data_preparation import DataExtractor
 from data_blocking import create_year_blocks
 from data_matching import calculate_similarities_between_blocks, calculate_similarities_between_dataframes
-from data_aquisition import check_download_extract
+from data_aquisition import download_file, extract_all_tgz_files
 
 def main():
 
     folder_path = './data/'
     # paths for dblp and acm
     dblp_url = 'https://lfs.aminer.cn/lab-datasets/citation/dblp.v8.tgz'
-    check_download_extract(url=dblp_url, file_name='dblp.txt', folder_path=folder_path)
+    download_file(url=dblp_url, file_name='dblp.txt', folder_path=folder_path)
 
     acm_url = 'https://lfs.aminer.cn/lab-datasets/citation/citation-acm-v8.txt.tgz'
-    check_download_extract(url=acm_url, file_name='citation-acm-v8.txt', folder_path=folder_path)
+    download_file(url=acm_url, file_name='citation-acm-v8.txt', folder_path=folder_path)
+
+    extract_all_tgz_files(folder_path)
 
     dblp_path = './data/dblp.txt'
     acm_path = './data/citation-acm-v8.txt'
