@@ -11,10 +11,8 @@ def main():
     download_and_extract(dblp_url, 'dblp.txt')
 
     acm_url = 'https://lfs.aminer.cn/lab-datasets/citation/citation-acm-v8.txt.tgz'
-    download_and_extract(acm_url, 'dblp.txt')
+    download_and_extract(acm_url, 'citation-acm-v8.txt')
 
-    #dblp_path = check_file_existence('dblp.txt', http_link=https://lfs.aminer.cn/lab-datasets/citation/dblp.v8.tgz)
-    #dblp_path = check_file_existence('citation-acm-v8.txt', http_link=https://lfs.aminer.cn/lab-datasets/citation/citation-acm-v8.txt.tgz)
     dblp_path = './data/dblp.txt'
     acm_path = './data/citation-acm-v8.txt'
 
