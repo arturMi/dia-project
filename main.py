@@ -9,14 +9,14 @@ def main():
 
     #dblp_path = check_file_existence('dblp.txt', http_link=https://lfs.aminer.cn/lab-datasets/citation/dblp.v8.tgz)
     #dblp_path = check_file_existence('citation-acm-v8.txt', http_link=https://lfs.aminer.cn/lab-datasets/citation/citation-acm-v8.txt.tgz)
-    #dblp_path = './data/dblp.txt'
-    #acm_path = './data/citation-acm-v8.txt'
+    dblp_path = './data/dblp.txt'
+    acm_path = './data/citation-acm-v8.txt'
 
-    #extract_dblp = DataExtractor(dblp_path)
-    #extract_dblp.process_dblp()
+    extract_dblp = DataExtractor(dblp_path)
+    extract_dblp.process_dblp()
 
-    #extract_acm = DataExtractor(acm_path)
-    #extract_acm.process_acm()
+    extract_acm = DataExtractor(acm_path)
+    extract_acm.process_acm()
 
     # -------------------WORKS--------------------------
 
