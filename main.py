@@ -2,8 +2,7 @@ import pandas as pd
 import time
 from data_aquisition import check_download_extract
 from data_preparation import DataExtractor
-from data_blocking import create_year_blocks
-from data_matching import calculate_similarities_between_blocks, calculate_similarities_between_dataframes
+from data_matching import create_year_blocks, calculate_similarities_between_blocks, calculate_similarities_between_dataframes
 
 
 def main():
@@ -49,7 +48,7 @@ def main():
     print(result_blocks_dblp)
     print(result_blocks_acm)
     
-    sim_measure = ['jaccard', 'trigram']
+    '''sim_measure = ['jaccard', 'trigram']
     threshold = 0.7
     columns = ['title']
     
@@ -78,7 +77,7 @@ def main():
             with open(f'elapsed_time_df_{measure}_{column}.txt', 'w') as file:
                 file.write(f'Elapsed time: {runtime} seconds')
 
-    # Baseline 2224 matches -> calculate precision, recall, and F-measure of the matches generated
+    # Baseline 2224 matches -> calculate precision, recall, and F-measure of the matches generated'''
 
 if __name__ == "__main__":
     main()
