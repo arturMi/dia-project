@@ -11,14 +11,10 @@ def tokenize(text):
     else:
         return set()
 
-def jaccard_similarity(set1, set2):
-    set1_upper = {element.upper() for element in set1}
-    set2_upper = {element.upper() for element in set2}
-
-    intersection = len(set1_upper.intersection(set2_upper))
-    union = len(set1_upper.union(set2_upper))
-    
-    return intersection / union if union != 0 else 0
+def jaccard_similarity(list1, list2):
+    s1 = set(list1)
+    s2 = set(list2)
+    return float(len(s1.intersection(s2)) / len(s1.union(s2)))
 
 def trigram_similarity(str1, str2):
     trigrams_str1 = set(nltk.ngrams(str1, 3))
@@ -35,9 +31,9 @@ def compare_blocks(block_one, block_two, measure, threshold, column_name):
     for idx1, row1 in block_one.iterrows():
         for idx2, row2 in block_two.iterrows():
             if measure == 'jaccard':
-                sim = jaccard_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
+                sim = jaccard_similarity(row1[column_name], row2[column_name])
             elif measure == 'trigram':
-                sim = trigram_similarity(row1[column_name], row2[column_name])
+                sim = trigram_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
             if sim >= threshold:
                 similarities.append({'idDBLP': row1['id'], 'idACM': row2['id'], 'Similarity': sim})
     return similarities
@@ -75,9 +71,9 @@ def calculate_similarities_between_dataframes(dataframe_one, dataframe_two, meas
         for idx1, row1 in dataframe_one.iterrows():
             for idx2, row2 in dataframe_two.iterrows():
                 if measure == 'jaccard':
-                    sim = jaccard_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
+                    sim = jaccard_similarity(row1[column_name], row2[column_name])
                 elif measure == 'trigram':
-                    sim = trigram_similarity(row1[column_name], row2[column_name])
+                    sim = trigram_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
                 if sim >= threshold:
                     similarities.append({'DBLP_Entry': row1.to_dict(), 'ACM_Entry': row2.to_dict(), 'Similarity': sim})
 

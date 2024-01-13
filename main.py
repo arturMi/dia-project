@@ -1,14 +1,15 @@
 import pandas as pd
 import time
+from data_aquisition import check_download_extract
 from data_preparation import DataExtractor
 from data_blocking import create_year_blocks
 from data_matching import calculate_similarities_between_blocks, calculate_similarities_between_dataframes
-from data_aquisition import check_download_extract
+
 
 def main():
 
+    # check if DBLP and ACM are in the data folder, if not download and extract them
     folder_path = './data/'
-    # paths for dblp and acm
     dblp_url = 'https://lfs.aminer.cn/lab-datasets/citation/dblp.v8.tgz'
     check_download_extract(dblp_url, folder_path)
 
