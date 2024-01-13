@@ -8,7 +8,7 @@ from data_matching import create_year_blocks, find_matches
 def main():
 
     # check if DBLP and ACM are in the data folder, if not download and extract them
-    '''folder_path = './data/'
+    folder_path = './data/'
     dblp_url = 'https://lfs.aminer.cn/lab-datasets/citation/dblp.v8.tgz'
     check_download_extract(dblp_url, folder_path)
 
@@ -26,7 +26,7 @@ def main():
     extract_dblp = DataExtractor(dblp_path)
     extract_dblp.process_dblp()
 
-    print("DATA WAS EXTRACTED")'''
+    print("DATA WAS EXTRACTED")
 
     # -------------------WORKS--------------------------
 

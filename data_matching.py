@@ -77,3 +77,7 @@ def find_matches(df1, df2, output_csv_path):
                         print("This is a match!")
                         print("row1 ID:", row1["id"])
                         print("row2 ID:", row2["id"])
+                        
+    matched_pairs.to_csv(output_csv_path, index=False)
+    print(f'Matched pairs written to {output_csv_path}')
+    return matched_pairs
