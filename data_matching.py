@@ -49,11 +49,6 @@ def trigram_similarity(str1, str2):
     trigrams1 = get_trigrams(str1)
     trigrams2 = get_trigrams(str2)
 
-    print(f"Trigrams for {str1}: {trigrams1}")
-    print(f"Trigrams for {str2}: {trigrams2}")
-    print(len(trigrams1))
-    print(len(trigrams2))
-
     intersection = len(trigrams1.intersection(trigrams2))
     union = len(trigrams1) + len(trigrams2)
 
