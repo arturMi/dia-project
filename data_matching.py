@@ -1,23 +1,10 @@
 import nltk
 import pandas as pd
-from multiprocessing import Pool
+import string
 
 nltk.download('punkt')
 
 def create_year_blocks(dataframe, year_ranges):
-    # Sort the DataFrame by the 'Year' column
-    dataframe = dataframe.sort_values(by='year')
-
-    blocks = []
-    for i, (start, end) in enumerate(year_ranges):
-        block_name = f'Block_{i+1}'
-        block_df = dataframe[(dataframe['year'] >= start) & (dataframe['year'] <= end)].copy()
-        blocks.append((block_name, block_df))
-    
-    return blocks
-
-
-'''def create_year_blocks(dataframe, year_ranges):
     # Sort the DataFrame by the 'Year' column
     dataframe = dataframe.sort_values(by='year')
     
@@ -26,38 +13,67 @@ def create_year_blocks(dataframe, year_ranges):
         block_name = f'Block_{i+1}'
         blocks[block_name] = dataframe[(dataframe['year'] >= start) & (dataframe['year'] <= end)]
     
-    return blocks'''
+    return blocks
 
-# Tokenization function
 def tokenize(text):
-    if isinstance(text, str):  
+    if isinstance(text, str):
+        text = text.translate(str.maketrans("", "", string.punctuation))
+        
         return set(nltk.word_tokenize(text.upper()))
     else:
         return set()
 
 def jaccard_similarity(list1, list2):
-    s1 = set(map(str.upper, list1))
-    s2 = set(map(str.upper, list2))
-    return float(len(s1.intersection(s2)) / len(s1.union(s2)))
+    s1 = tokenize(list1)
+    s2 = tokenize(list2)
+    
+    intersection_size = len(s1.intersection(s2))
+    union_size = len(s1.union(s2))
+    
+    if union_size != 0:
+        return float(intersection_size / union_size)
+    else:
+        return 0.0
+
 
 def trigram_similarity(str1, str2):
-    trigrams_str1 = set(nltk.ngrams(str1, 3))
-    trigrams_str2 = set(nltk.ngrams(str2, 3))
+    def get_trigrams(text):
+        trigrams = set()
+        # add 2 empty fields in the end and beginning, pretty hard coded
+        text = "  " + text + "  "
+        for i in range(len(text) - 2):
+            trigram = text[i:i+3]
+            trigrams.add(trigram)
+        return trigrams
     
-    # Calculate Jaccard similarity between trigrams
-    intersection = len(trigrams_str1.intersection(trigrams_str2))
-    union = len(trigrams_str1.union(trigrams_str2))
-    
-    return intersection / union if union != 0 else 0
+    trigrams1 = get_trigrams(str1)
+    trigrams2 = get_trigrams(str2)
 
-def compare_blocks(df_one, df_two, measure, threshold, column_name):
-    similarities = []
-    for idx1, row1 in df_one.iterrows():
-        for idx2, row2 in df_two.iterrows():
-            if measure == 'jaccard':
-                sim = jaccard_similarity(row1[column_name], row2[column_name])
-            elif measure == 'trigram':
-                sim = trigram_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
-            if sim >= threshold:
-                similarities.append({'idDBLP': row1['id'], 'idACM': row2['id'], 'Similarity': sim})
-    return similarities
+    print(f"Trigrams for {str1}: {trigrams1}")
+    print(f"Trigrams for {str2}: {trigrams2}")
+    print(len(trigrams1))
+    print(len(trigrams2))
+
+    intersection = len(trigrams1.intersection(trigrams2))
+    union = len(trigrams1) + len(trigrams2)
+
+    if union == 0:
+        return 0.0
+    else:
+        return 2 * intersection / union
+
+def find_matches(df1, df2, output_csv_path):
+    matched_pairs = pd.DataFrame(columns=['id1', 'id2'])
+
+    for idx1, row1 in df1.iterrows():
+        for idx2, row2 in df2.iterrows():
+            
+            if row1['title'] == row2['title'] and row1['year'] == row2['year']:
+                sim_auth = jaccard_similarity(tokenize(row1['authors']), tokenize(row2['authors']))
+                if sim_auth >= 0.1:
+                    sim_venue = jaccard_similarity(tokenize(row1['venue']), tokenize(row2['venue']))
+                    if sim_venue >= 0.1:
+                        matched_pairs = matched_pairs.append({'id1': row1['id'], 'id2': row2['id']}, ignore_index=True)
+                        print("This is a match!")
+                        print("row1 ID:", row1["id"])
+                        print("row2 ID:", row2["id"])

@@ -1,4 +1,4 @@
-PaperID,Title,Authors,Year,Venue
+id,title,authors,year,venue
 53e998a3b7602d97020ddb24,An initial study of overheads of eddies.,['Amol Deshpande'],2004,SIGMOD Record
 53e9ab20b7602d97034a8f2b,Engineering Federated Information Systems: Report of EFIS '99 Workshop.,"['Stefan Conrad', 'Wilhelm Hasselbring', 'Uwe Hohenstein', 'Ralf-Detlef Kutsche', 'Mark Roantree', 'Gunter Saake', 'Fèlix Saltor']",1999,SIGMOD Record
 53e9b275b7602d9703d174f6,Information Finding in a Digital Library: The Stanford Perspective.,"['Tak W. Yan', 'Hector Garcia-Molina']",1995,SIGMOD Record

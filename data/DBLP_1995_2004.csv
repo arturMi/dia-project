@@ -1,4 +1,4 @@
-PaperID,Title,Authors,Year,Venue
+id,title,authors,year,venue
 5390972920f70186a0dfac5e,The next database revolution,['Jim Gray'],2004,SIGMOD '04 Proceedings of the 2004 ACM SIGMOD international conference on Management of data
 5390972920f70186a0dfac51,The role of cryptography in database security,['Ueli Maurer'],2004,SIGMOD '04 Proceedings of the 2004 ACM SIGMOD international conference on Management of data
 5390972920f70186a0dfac57,Tree logical classes for efficient evaluation of XQuery,"['Stelios Paparizos', 'Yuqing Wu', 'Laks V. S. Lakshmanan', 'H. V. Jagadish']",2004,SIGMOD '04 Proceedings of the 2004 ACM SIGMOD international conference on Management of data
