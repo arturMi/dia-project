@@ -26,17 +26,18 @@ def trigram_similarity(str1, str2):
     
     return intersection / union if union != 0 else 0
 
-def compare_blocks(block_one, block_two, measure, threshold, column_name):
+def compare_blocks(df_one, df_two, measure, threshold, column_name):
     similarities = []
-    for idx1, row1 in block_one.iterrows():
-        for idx2, row2 in block_two.iterrows():
+    for idx1, row1 in df_one.iterrows():
+        for idx2, row2 in df_two.iterrows():
             if measure == 'jaccard':
-                sim = jaccard_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
+                sim = jaccard_similarity(row1[column_name], row2[column_name])
             elif measure == 'trigram':
                 sim = trigram_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
             if sim >= threshold:
                 similarities.append({'idDBLP': row1['id'], 'idACM': row2['id'], 'Similarity': sim})
     return similarities
+
 
 def process_blocks(block_name_one, block_one_data, block_name_two, block_two_data, measure, threshold, column_name):
     similarities = compare_blocks(block_one_data, block_two_data, measure, threshold, column_name)
