@@ -2,7 +2,7 @@ import pandas as pd
 import time
 from data_aquisition import check_download_extract
 from data_preparation import DataExtractor
-from data_matching import create_year_blocks, calculate_similarities_between_blocks, calculate_similarities_between_dataframes
+from data_matching import create_year_blocks
 
 
 def main():
