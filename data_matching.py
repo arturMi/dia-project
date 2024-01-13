@@ -7,13 +7,26 @@ nltk.download('punkt')
 def create_year_blocks(dataframe, year_ranges):
     # Sort the DataFrame by the 'Year' column
     dataframe = dataframe.sort_values(by='year')
+
+    blocks = []
+    for i, (start, end) in enumerate(year_ranges):
+        block_name = f'Block_{i+1}'
+        block_df = dataframe[(dataframe['year'] >= start) & (dataframe['year'] <= end)].copy()
+        blocks.append((block_name, block_df))
+    
+    return blocks
+
+
+'''def create_year_blocks(dataframe, year_ranges):
+    # Sort the DataFrame by the 'Year' column
+    dataframe = dataframe.sort_values(by='year')
     
     blocks = {}
     for i, (start, end) in enumerate(year_ranges):
         block_name = f'Block_{i+1}'
         blocks[block_name] = dataframe[(dataframe['year'] >= start) & (dataframe['year'] <= end)]
     
-    return blocks
+    return blocks'''
 
 # Tokenization function
 def tokenize(text):
