@@ -70,10 +70,21 @@ def find_matches(df1, df2, output_csv_path):
             
             if row1['title'] == row2['title'] and row1['year'] == row2['year']:
                 print('same title found')
-                sim_auth = jaccard_similarity(tokenize(row1['authors']), tokenize(row2['authors']))
+                sim_auth = jaccard_similarity(row1['authors'], row2['authors'])
                 if sim_auth >= 0.1:
-                    sim_venue = jaccard_similarity(tokenize(row1['venue']), tokenize(row2['venue']))
+                    sim_venue = jaccard_similarity(row1['venue'], row2['venue'])
                     if sim_venue >= 0.1:
+                        matched_pairs = matched_pairs.append({'id1': row1['id'], 'id2': row2['id']}, ignore_index=True)
+                        print("This is a match!")
+                        print("row1 ID:", row1["id"])
+                        print("row2 ID:", row2["id"])
+
+            if row1['title'] == row2['title'] and row1['year'] == row2['year']:
+                print('same title found')
+                sim_auth = trigram_similarity(row1['authors'], row2['authors'])
+                if sim_auth >= 0.6:
+                    sim_venue = trigram_similarity(row1['venue'], row2['venue'])
+                    if sim_venue >= 0.6:
                         matched_pairs = matched_pairs.append({'id1': row1['id'], 'id2': row2['id']}, ignore_index=True)
                         print("This is a match!")
                         print("row1 ID:", row1["id"])
