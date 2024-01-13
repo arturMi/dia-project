@@ -2,13 +2,26 @@ import pandas as pd
 
 # Function to create year blocks
 
-def create_year_blocks(dataframe, year_ranges):
+'''def create_year_blocks(dataframe, year_ranges):
     blocks = {}
     dataframe = dataframe.sort_values(by='year')
     for i, (start, end) in enumerate(year_ranges):
         block_name = f'Block_{start}_{end}'
         blocks[block_name] = dataframe[(dataframe['year'] >= start) & (dataframe['year'] <= end)]
-    return blocks
+    return blocks'''
+
+def create_year_blocks(dataframe, year_ranges):
+    blocks = {}
+    dataframe = dataframe.sort_values(by='year')
+    
+    for i, (start, end) in enumerate(year_ranges):
+        block_name = f'Block_{start}_{end}'
+        blocks[block_name] = dataframe[(dataframe['year'] >= start) & (dataframe['year'] <= end)]
+    
+    # Concatenate blocks into a new DataFrame
+    result_df = pd.concat(blocks.values(), ignore_index=True)
+
+    return result_df
 
 '''def create_year_blocks(dataframe, year_ranges):
     blocks = {}

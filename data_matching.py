@@ -31,7 +31,7 @@ def compare_blocks(block_one, block_two, measure, threshold, column_name):
     for idx1, row1 in block_one.iterrows():
         for idx2, row2 in block_two.iterrows():
             if measure == 'jaccard':
-                sim = jaccard_similarity(jaccard_similarity(row1[column_name]), jaccard_similarity(row2[column_name]))
+                sim = jaccard_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
             elif measure == 'trigram':
                 sim = trigram_similarity(tokenize(row1[column_name]), tokenize(row2[column_name]))
             if sim >= threshold:
