@@ -69,6 +69,7 @@ def find_matches(df1, df2, output_csv_path):
         for idx2, row2 in df2.iterrows():
             
             if row1['title'] == row2['title'] and row1['year'] == row2['year']:
+                print('same title found')
                 sim_auth = jaccard_similarity(tokenize(row1['authors']), tokenize(row2['authors']))
                 if sim_auth >= 0.1:
                     sim_venue = jaccard_similarity(tokenize(row1['venue']), tokenize(row2['venue']))
