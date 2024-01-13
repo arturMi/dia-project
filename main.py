@@ -27,6 +27,8 @@ def main():
     extract_dblp = DataExtractor(dblp_path)
     extract_dblp.process_dblp()
 
+    print("DATA WAS EXTRACTED")
+
     # -------------------WORKS--------------------------
 
     # create blocks, change likewise to get better
@@ -41,6 +43,8 @@ def main():
     # get blocks as dictionary
     result_blocks_dblp = create_year_blocks(df_dblp_path, year_ranges)
     result_blocks_acm = create_year_blocks(df_acm_path, year_ranges)
+
+    print("BLOCKS WHERE CREATED AND SIMILARITY WILL BE CALCULATED")
 
     print(result_blocks_dblp)
     print(result_blocks_acm)
