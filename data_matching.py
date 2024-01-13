@@ -38,11 +38,6 @@ def compare_blocks(df_one, df_two, measure, threshold, column_name):
                 similarities.append({'idDBLP': row1['id'], 'idACM': row2['id'], 'Similarity': sim})
     return similarities
 
-
-def process_blocks(block_name_one, block_one_data, block_name_two, block_two_data, measure, threshold, column_name):
-    similarities = compare_blocks(block_one_data, block_two_data, measure, threshold, column_name)
-    return similarities
-
 def calculate_similarities_between_blocks(dict_or_dataframe_one, dict_or_dataframe_two, measure='jaccard', threshold=0.75, column_name='Title'):
     if isinstance(dict_or_dataframe_one, dict) and isinstance(dict_or_dataframe_two, dict):
         similarities = []
@@ -51,7 +46,7 @@ def calculate_similarities_between_blocks(dict_or_dataframe_one, dict_or_datafra
         # Process each block pair in parallel
         for block_name_one, block_one_data in dict_or_dataframe_one.items():
             for block_name_two, block_two_data in dict_or_dataframe_two.items():
-                similarities.append(pool.apply_async(process_blocks, (block_name_one, block_one_data, block_name_two, block_two_data, measure, threshold, column_name)))
+                similarities.append(pool.apply_async(compare_blocks, (block_name_one, block_one_data, block_name_two, block_two_data, measure, threshold, column_name)))
 
         pool.close()
         pool.join()
@@ -63,8 +58,15 @@ def calculate_similarities_between_blocks(dict_or_dataframe_one, dict_or_datafra
         df = pd.DataFrame(similarities)
         df.to_csv(f'./data/Matched_Entities_Blocks_{measure}.csv', index=False)
         return df
+    elif isinstance(dict_or_dataframe_one, pd.DataFrame) and isinstance(dict_or_dataframe_two, pd.DataFrame):
+        # If both inputs are DataFrames, directly calculate similarities
+        similarities = compare_blocks('DF1', dict_or_dataframe_one, 'DF2', dict_or_dataframe_two, measure, threshold, column_name)
+        
+        df = pd.DataFrame(similarities)
+        df.to_csv(f'./data/Matched_Entities_DF_{measure}.csv', index=False)
+        return df
     else:
-        raise ValueError("Inputs should be two dictionaries.")
+        raise ValueError("Inputs should be two dictionaries or two DataFrames.")
     
 def calculate_similarities_between_dataframes(dataframe_one, dataframe_two, measure='jaccard', threshold=0.75, column_name='Title'):
     if isinstance(dataframe_one, pd.DataFrame) and isinstance(dataframe_two, pd.DataFrame):
