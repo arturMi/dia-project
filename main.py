@@ -48,6 +48,7 @@ def main():
     
     print("BLOCKS WERE CREATED AND SIMILARITY WILL BE CALCULATED")
 
+    # DBLP path first and ACM second, hard coded in function 
     output_csv_path = './data/matched_pairs.csv'
     matched_pairs_df = find_matches(df_dblp_path, df_acm_path, output_csv_path)
     print(matched_pairs_df)
