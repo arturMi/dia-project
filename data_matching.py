@@ -49,6 +49,9 @@ def trigram_similarity(str1, str2):
     trigrams1 = get_trigrams(str1)
     trigrams2 = get_trigrams(str2)
 
+    print(trigrams1)
+    print(trigrams2)
+
     intersection = len(trigrams1.intersection(trigrams2))
     union = len(trigrams1) + len(trigrams2)
 
@@ -65,11 +68,13 @@ def find_matches(df1, df2, output_csv_path):
             
             if row1['title'] == row2['title'] and row1['year'] == row2['year']:
                 print('same title found')
+                print(df1.iloc[[idx1]])
+                print(df2.iloc[[idx2]])
                 sim_auth = jaccard_similarity(row1['authors'], row2['authors'])
                 if sim_auth >= 0.1:
+                    print(sim_auth)
                     print(df1.iloc[[idx1]])
                     print(df2.iloc[[idx2]])
-                    print(sim_auth)
                     sim_venue = jaccard_similarity(row1['venue'], row2['venue'])
                     matched_pairs = matched_pairs.append({'DBLP': row1['id'], 'ACM': row2['id']}, ignore_index=True)
                     if sim_venue >= 0.1:
