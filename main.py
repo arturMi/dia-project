@@ -43,18 +43,18 @@ def main():
     #df_acm_path = pd.read_csv('data/ACM.csv', engine='python')
 
     # get blocks as dictionary
-    result_blocks_dblp = create_year_blocks(df_dblp_path, year_ranges)
-    result_blocks_acm = create_year_blocks(df_acm_path, year_ranges)
+    #result_blocks_dblp = create_year_blocks(df_dblp_path, year_ranges)
+    #result_blocks_acm = create_year_blocks(df_acm_path, year_ranges)
 
-    print(result_blocks_dblp)
-    print(result_blocks_acm)
+    #print(result_blocks_dblp)
+    #print(result_blocks_acm)
     
     print("BLOCKS WERE CREATED AND SIMILARITY WILL BE CALCULATED")
 
     # please consider order: matched_pairs_df(DBLP, ACM, output_csv_path) 
     output_csv_path = './data/Matched Entities.csv'
-    matched_pairs_df = find_matches(dblp_cleaned, acm_cleaned, output_csv_path)
-    #matched_pairs_df = find_matches(df_dblp_path, df_acm_path, output_csv_path)
+    #matched_pairs_df = find_matches(dblp_cleaned, acm_cleaned, output_csv_path)
+    matched_pairs_df = find_matches(df_dblp_path, df_acm_path, output_csv_path)
     print(matched_pairs_df)
 
 
