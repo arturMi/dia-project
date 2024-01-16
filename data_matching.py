@@ -93,10 +93,6 @@ def find_matches(df1, df2, output_csv_path):
                     print(df2.iloc[[idx2]])
                     print(f'The Jaccard Similarity for the Title in row is: {sim_title}')
                     print(f'The Jaccard Similarity for the Author is: {sim_auth}')
-                else:
-                    # get all the unmatched ids to check them later
-                    unmatched_pairs = unmatched_pairs.append({'DBLP PaperId': row1['id']}, ignore_index=True)
-                    matched_pairs.to_csv('./data/unmatched_pairs.csv', index=False)
 
             '''if row1['title'] == row2['title'] and row1['year'] == row2['year']:
                 print('same title found')
