@@ -62,7 +62,7 @@ def trigram_similarity(str1, str2):
         return 2 * intersection / union
     
 def dataframe_cleaning(dataframe):
-    dataframe.sort_values(by='year', inplace=True)
+    #dataframe.sort_values(by='year', inplace=True)
     dataframe.replace("", np.nan, inplace=True)
 
     original_shape = dataframe.shape
