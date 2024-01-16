@@ -63,15 +63,15 @@ def trigram_similarity(str1, str2):
     
 def dataframe_cleaning(dataframe):
     #dataframe.sort_values(by='year', inplace=True)
-    dataframe.replace("", np.nan, inplace=True)
+    dataframe = dataframe.replace("", np.nan, inplace=True)
 
     original_shape = dataframe.shape
-    dataframe.dropna(inplace=True)
+    dataframe = dataframe.dropna(inplace=True)
     dropped_rows = original_shape[0] - dataframe.shape[0]
 
     print(f'In the dataframe {dropped_rows} were dropped, due to NaN values.')
 
-    dataframe.drop_duplicates(subset=['id'], keep='first', inplace=True)
+    dataframe = dataframe.drop_duplicates(subset=['id'], keep='first', inplace=True)
     dropped_rows = original_shape[0] - dataframe.shape[0]
 
     print(f'In the dataframe {dropped_rows} were dropped, due to duplicates values.')
