@@ -68,7 +68,7 @@ def find_matches(df1, df2, output_csv_path):
                 sim_auth = jaccard_similarity(row1['authors'], row2['authors'])
                 if sim_auth >= 0.1:
                     print(df1.iloc[[idx1]])
-                    print(df1.iloc[[idx1]])
+                    print(df2.iloc[[idx2]])
                     sim_venue = jaccard_similarity(row1['venue'], row2['venue'])
                     if sim_venue >= 0.1:
                         matched_pairs = matched_pairs.append({'DBLP': row1['id'], 'ACM': row2['id']}, ignore_index=True)
