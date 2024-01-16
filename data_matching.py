@@ -40,7 +40,7 @@ def trigram_similarity(str1, str2):
     def get_trigrams(text):
         trigrams = set()
         # add 2 empty fields in the end and beginning, pretty hard coded
-        text = "  " + text + "  "
+        text = "  " + str(text) + "  "
         for i in range(len(text) - 2):
             trigram = text[i:i+3]
             trigrams.add(trigram)
