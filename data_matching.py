@@ -26,9 +26,6 @@ def tokenize(text):
 def jaccard_similarity(list1, list2):
     s1 = tokenize(list1)
     s2 = tokenize(list2)
-
-    print(list1)
-    print(list2)
     
     intersection_size = len(s1.intersection(s2))
     union_size = len(s1.union(s2))
@@ -61,6 +58,7 @@ def trigram_similarity(str1, str2):
         return 2 * intersection / union
 
 def find_matches(df1, df2, output_csv_path):
+    matched_pairs = pd.DataFrame(columns=['DBLP', 'ACM'])
 
     for idx1, row1 in df1.iterrows():
         for idx2, row2 in df2.iterrows():
@@ -70,7 +68,7 @@ def find_matches(df1, df2, output_csv_path):
                 sim_auth = jaccard_similarity(row1['authors'], row2['authors'])
                 if sim_auth >= 0.1:
                     print(df1.iloc[[idx1]])
-                    print(df2.iloc[[idx2]])
+                    print(df1.iloc[[idx1]])
                     sim_venue = jaccard_similarity(row1['venue'], row2['venue'])
                     if sim_venue >= 0.1:
                         matched_pairs = matched_pairs.append({'DBLP': row1['id'], 'ACM': row2['id']}, ignore_index=True)
