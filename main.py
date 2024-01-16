@@ -36,8 +36,8 @@ def main():
     df_dblp_path = pd.read_csv('data/DBLP_1995_2004.csv')
     df_acm_path = pd.read_csv('data/ACM_1995_2004.csv')
 
-    dblp_cleaned = dataframe_cleaning(df_dblp_path)
-    acm_cleaned = dataframe_cleaning(df_acm_path)
+    '''dblp_cleaned = dataframe_cleaning(df_dblp_path)
+    acm_cleaned = dataframe_cleaning(df_acm_path)'''
 
     #df_dblp_path = pd.read_csv('data/DBLP2.csv', engine='python')
     #df_acm_path = pd.read_csv('data/ACM.csv', engine='python')
