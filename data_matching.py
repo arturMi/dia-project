@@ -1,5 +1,6 @@
 import nltk
 import pandas as pd
+import numpy as np
 import string
 
 nltk.download('punkt')
@@ -59,21 +60,43 @@ def trigram_similarity(str1, str2):
         return 0.0
     else:
         return 2 * intersection / union
+    
+def dataframe_cleaning(dataframe):
+    dataframe.sort_values(by='year', inplace=True)
+    dataframe.replace("", np.nan, inplace=True)
+
+    original_shape = dataframe.shape
+    dataframe.dropna(inplace=True)
+    dropped_rows = original_shape[0] - dataframe.shape[0]
+
+    print(f'In the dataframe {dropped_rows} were dropped, due to NaN values.')
+
+    dataframe.drop_duplicates(subset=['id'], keep='first', inplace=True)
+    dropped_rows = original_shape[0] - dataframe.shape[0]
+
+    print(f'In the dataframe {dropped_rows} were dropped, due to duplicates values.')
+
+    return dataframe
 
 def find_matches(df1, df2, output_csv_path):
     matched_pairs = pd.DataFrame(columns=['DBLP', 'ACM'])
+    unmatched_pairs = pd.DataFrame(columns=['DBLP PaperId'])
 
     for idx1, row1 in df1.iterrows():
         for idx2, row2 in df2.iterrows():
             sim_title = jaccard_similarity(row1['title'], row2['title'])
             sim_auth = jaccard_similarity(row1['authors'], row2['authors'])
             if sim_title >= 0.9 and row1['year'] == row2['year']:
-                if sim_auth >= 0.1:
+                if sim_auth >= 0.05:
                     matched_pairs = matched_pairs.append({'DBLP': row1['id'], 'ACM': row2['id']}, ignore_index=True)
                     print(df1.iloc[[idx1]])
                     print(df2.iloc[[idx2]])
                     print(f'The Jaccard Similarity for the Title in row is: {sim_title}')
                     print(f'The Jaccard Similarity for the Author is: {sim_auth}')
+                else:
+                    # get all the unmatched ids to check them later
+                    unmatched_pairs = unmatched_pairs.append({'DBLP PaperId': row1['id']}, ignore_index=True)
+                    matched_pairs.to_csv('./data/unmatched_pairs.csv', index=False)
 
             '''if row1['title'] == row2['title'] and row1['year'] == row2['year']:
                 print('same title found')
