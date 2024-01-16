@@ -58,7 +58,7 @@ def trigram_similarity(str1, str2):
         return 2 * intersection / union
 
 def find_matches(df1, df2, output_csv_path):
-    matched_pairs = pd.DataFrame(columns=['id1', 'id2'])
+    matched_pairs = pd.DataFrame(columns=['DBLP', 'ACM'])
 
     for idx1, row1 in df1.iterrows():
         for idx2, row2 in df2.iterrows():
@@ -74,7 +74,7 @@ def find_matches(df1, df2, output_csv_path):
                         print("row1 ID:", row1["id"])
                         print("row2 ID:", row2["id"])
 
-            if row1['title'] == row2['title'] and row1['year'] == row2['year']:
+            '''if row1['title'] == row2['title'] and row1['year'] == row2['year']:
                 print('same title found')
                 sim_auth = trigram_similarity(row1['authors'], row2['authors'])
                 if sim_auth >= 0.6:
@@ -83,7 +83,7 @@ def find_matches(df1, df2, output_csv_path):
                         matched_pairs = matched_pairs.append({'id1': row1['id'], 'id2': row2['id']}, ignore_index=True)
                         print("This is a match!")
                         print("row1 ID:", row1["id"])
-                        print("row2 ID:", row2["id"])
+                        print("row2 ID:", row2["id"])'''
                         
     matched_pairs.to_csv(output_csv_path, index=False)
     print(f'Matched pairs written to {output_csv_path}')
